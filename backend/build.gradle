@@ -1,0 +1,22 @@
+apply plugin: 'application'
+
+mainClassName = 'com.cormicopiastudios.theloftbackend.ServerLauncher'
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.badlogicgames.gdx:gdx:1.9.0"
+}
+
+task dist(type: Jar) {
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
