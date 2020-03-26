@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.cormicopiastudios.theloft.Frontend.Menus.EntranceScreen;
 import com.cormicopiastudios.theloft.Frontend.Menus.LoadingScreen;
 import com.cormicopiastudios.theloft.Frontend.Menus.MainMenu;
 import com.github.czyzby.websocket.net.ExtendedNet;
@@ -20,6 +21,8 @@ public class TheLoft extends Game {
 	public final static int LOADING = 1;
 	private MainMenu mainMenu;
 	public final static int MAINMENU = 2;
+	private EntranceScreen entranceScreen;
+	public final static int ENTRANCE = 3;
 	
 	@Override
 	public void create () {
@@ -48,6 +51,9 @@ public class TheLoft extends Game {
 			case MAINMENU: if (mainMenu == null) mainMenu = new MainMenu(this);
 				this.setScreen(mainMenu);
 				break;
+			case ENTRANCE: if (entranceScreen == null) entranceScreen = new EntranceScreen();
+			this.setScreen(entranceScreen);
+			break;
 
 		}
 	}

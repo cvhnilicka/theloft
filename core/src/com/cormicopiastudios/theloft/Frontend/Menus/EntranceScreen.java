@@ -3,28 +3,21 @@ package com.cormicopiastudios.theloft.Frontend.Menus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.cormicopiastudios.theloft.TheLoft;
 
+public class EntranceScreen implements Screen {
 
-public class MainMenu implements Screen {
-
-
-    private TheLoft parent;
+    // here you will be given the preferences before you enter.
+    // i.e. nickname and character choice
 
     private Stage stage;
     private Skin skin; // will temp use a skin
 
-
-
-    public MainMenu(TheLoft parent) {
-        this.parent = parent;
+    public EntranceScreen() {
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("skin/shade/uiskin.json"));
     }
@@ -35,17 +28,11 @@ public class MainMenu implements Screen {
         stage.clear();
         Gdx.input.setInputProcessor(stage);
 
+        // overarching table to hold all pref choices.
         Table table = new Table();
         table.setFillParent(true);
-        TextButton enterLoft = new TextButton("Join Loft", skin);
-        enterLoft.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(TheLoft.ENTRANCE);
-            }
-        });
-
-        table.add(enterLoft).fillX().uniform();
+        TextButton enter = new TextButton("Enter", skin);
+        table.add(enter).fillX().uniform();
         table.row();
         stage.addActor(table);
 
@@ -57,7 +44,6 @@ public class MainMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-
     }
 
     @Override
