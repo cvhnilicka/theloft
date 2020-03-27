@@ -1,5 +1,7 @@
 package com.cormicopiastudios.theloftbackend;
 
+import com.cormicopiastudios.theloftshared.SharedObjects.MessageObject;
+import com.cormicopiastudios.theloftshared.SharedObjects.PlayerObject;
 import com.github.czyzby.websocket.serialization.Serializer;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -7,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.http.WebSocketFrame;
 
@@ -61,6 +64,18 @@ public class ClientHandler extends Thread {
 
 
         // if (request instanceof object) etc.......
+        if (request instanceof MessageObject) {
+            // New client joined, passing along their specific server informatiom
+            logger.log(Level.INFO, "Received MESSAGE: " + ((MessageObject)request).message);
+            final PlayerObject newClient = new PlayerObject();
+            newClient.name = "";
+            newClient.tid = this.getId();
+            webSocket.writeBinaryMessage(Buffer.buffer(serializer.serialize(newClient)));
+        }
+
+
+
+
     }
 
 }

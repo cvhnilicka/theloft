@@ -49,6 +49,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        implementation "com.github.czyzby:gdx-websocket-common:1.9.1.9.6"
         implementation project(':ashley')
         implementation project(':shared')
         

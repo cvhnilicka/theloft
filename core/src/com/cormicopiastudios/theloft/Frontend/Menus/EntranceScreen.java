@@ -3,11 +3,14 @@ package com.cormicopiastudios.theloft.Frontend.Menus;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.cormicopiastudios.theloft.TheLoft;
 
 public class EntranceScreen implements Screen {
 
@@ -16,8 +19,10 @@ public class EntranceScreen implements Screen {
 
     private Stage stage;
     private Skin skin; // will temp use a skin
+    private TheLoft parent;
 
-    public EntranceScreen() {
+    public EntranceScreen(TheLoft parent) {
+        this.parent = parent;
         stage = new Stage(new ScreenViewport());
         skin = new Skin(Gdx.files.internal("skin/shade/uiskin.json"));
     }
@@ -32,6 +37,13 @@ public class EntranceScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         TextButton enter = new TextButton("Enter", skin);
+        enter.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                parent.changeScreen(TheLoft.GAME);
+            }
+        });
+
         table.add(enter).fillX().uniform();
         table.row();
         stage.addActor(table);

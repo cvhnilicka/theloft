@@ -1,7 +1,7 @@
 package com.cormicopiastudios.theloftshared.SharedObjects;
 
-public class PlayerObject {
+public class PlayerPos {
     public long tid;
-    public String name;
-    public PlayerPos pos;
+    public float x;
+    public float y;
 }

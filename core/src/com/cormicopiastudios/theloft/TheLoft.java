@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.cormicopiastudios.theloft.Frontend.Menus.EntranceScreen;
 import com.cormicopiastudios.theloft.Frontend.Menus.LoadingScreen;
 import com.cormicopiastudios.theloft.Frontend.Menus.MainMenu;
+import com.cormicopiastudios.theloft.GameEngine.GameMaster;
 import com.github.czyzby.websocket.net.ExtendedNet;
 
 import java.util.HashMap;
@@ -23,6 +24,8 @@ public class TheLoft extends Game {
 	public final static int MAINMENU = 2;
 	private EntranceScreen entranceScreen;
 	public final static int ENTRANCE = 3;
+	private GameMaster gameMaster;
+	public final static int GAME = 4;
 	
 	@Override
 	public void create () {
@@ -51,9 +54,11 @@ public class TheLoft extends Game {
 			case MAINMENU: if (mainMenu == null) mainMenu = new MainMenu(this);
 				this.setScreen(mainMenu);
 				break;
-			case ENTRANCE: if (entranceScreen == null) entranceScreen = new EntranceScreen();
+			case ENTRANCE: if (entranceScreen == null) entranceScreen = new EntranceScreen(this);
 			this.setScreen(entranceScreen);
 			break;
+			case GAME: gameMaster = new GameMaster(this);
+				break;
 
 		}
 	}
