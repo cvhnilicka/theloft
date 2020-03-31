@@ -12,18 +12,24 @@ public class GameMaster {
     private PlayScreen instance;
     private WebSocket socket;
 
+    public final static long TEMPTID = -99L;
+
     private long localTid;
 
     public GameMaster(TheLoft parent) {
         this.parent = parent;
         this.socket = ExtendedNet.getNet().newWebSocket("127.0.0.1", 8765);
         this.socket.addListener(new SocketListener(this));
+        localTid = TEMPTID;
         socket.connect();
         instance = new PlayScreen(this);
-//        parent.setScreen(instance);
+        parent.setScreen(instance);
 
     }
 
     public void setLocalTid(long tid) { this.localTid = tid; }
 
+    public long getLocalTid() {
+        return localTid;
+    }
 }

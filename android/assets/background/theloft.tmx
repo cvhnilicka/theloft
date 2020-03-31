@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="-1" width="10" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="5">
+ <layer id="1" name="Tile Layer 1" width="10" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgwkAAAGQAAE=
+  </data>
+ </layer>
+ <imagelayer id="2" name="Image Layer 1">
+  <image source="loft-v1.png" width="320" height="320"/>
+ </imagelayer>
+ <objectgroup id="3" name="collision">
+  <object id="1" x="192" y="128" width="47" height="134"/>
+  <object id="2" x="284" y="151.5" width="34.5" height="95"/>
+  <object id="3" x="32" y="224" width="97.5" height="65"/>
+  <object id="4" x="251" y="31" width="62.5" height="64"/>
+ </objectgroup>
+</map>
