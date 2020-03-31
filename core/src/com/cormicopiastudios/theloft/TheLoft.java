@@ -10,6 +10,7 @@ import com.cormicopiastudios.theloft.Frontend.Menus.EntranceScreen;
 import com.cormicopiastudios.theloft.Frontend.Menus.LoadingScreen;
 import com.cormicopiastudios.theloft.Frontend.Menus.MainMenu;
 import com.cormicopiastudios.theloft.GameEngine.GameMaster;
+import com.github.czyzby.websocket.WebSockets;
 import com.github.czyzby.websocket.net.ExtendedNet;
 
 import java.util.HashMap;
@@ -41,6 +42,7 @@ public class TheLoft extends Game {
 	
 	@Override
 	public void dispose () {
+		this.gameMaster.dispose();
 		batch.dispose();
 	}
 

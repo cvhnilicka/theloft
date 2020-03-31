@@ -3,6 +3,9 @@ package com.cormicopiastudios.theloftbackend;
 import com.cormicopiastudios.theloftshared.SharedObjects.MessageObject;
 import com.cormicopiastudios.theloftshared.SharedObjects.PlayerObject;
 import com.cormicopiastudios.theloftshared.SharedObjects.PlayerPos;
+import com.cormicopiastudios.theloftshared.SharedObjects.PlayerReq;
+import com.cormicopiastudios.theloftshared.SharedObjects.ServerState;
+import com.cormicopiastudios.theloftshared.SharedUtils;
 import com.github.czyzby.websocket.serialization.Serializer;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,7 +22,7 @@ public class ClientHandler extends Thread {
 //    final AtomicInteger idCounter;
     final Serializer serializer;
     final Vertx vertx;
-    long timerId;
+    long timerId; // timer id used to send/cancel updates
     ServerLauncher server;
     Logger logger;
 
@@ -42,6 +45,20 @@ public class ClientHandler extends Thread {
         // delay updates for 1 sec to establish connection
         vertx.setTimer(1000, id -> {
             // here i can set the periodic timer to send out updates on X interval
+            timerId = vertx.setPeriodic(15, i -> {
+//                System.out.println("Sending Update");
+                ServerState state = new ServerState();
+//                state.numClients = ServerLauncher.numClients;
+                String toSend = SharedUtils.serverMapToString(this.server.map);
+                state.state = toSend;
+
+                try {
+                    byte[] sending = serializer.serialize(state);
+                    wbs.writeBinaryMessage(Buffer.buffer(sending));
+                } catch (Exception e) {
+                    logger.log(Level.WARNING, e.toString());
+                }
+            });
         });
 
 
@@ -54,7 +71,10 @@ public class ClientHandler extends Thread {
             // 2) remove thread from pool of active handlers
             server.handlers.remove((Thread)this);
             // 3) send message out to all other handlers that there was a DC
+            this.server.clientLeft(this.getId());
             // 4) Cancel the periodic update timer in vertex for this thread
+            vertx.cancelTimer(timerId);
+
         });
     }
 
@@ -64,22 +84,26 @@ public class ClientHandler extends Thread {
         final Object request = serializer.deserialize(frame.binaryData().getBytes());
 
 
+
+
         // if (request instanceof object) etc.......
         if (request instanceof MessageObject) {
             // New client joined, passing along their specific server informatiom
             logger.log(Level.INFO, "Received MESSAGE: " + ((MessageObject)request).message);
-            final PlayerObject newClient = new PlayerObject();
-            newClient.name = "";
-            newClient.tid = (int)this.getId();
-            webSocket.writeBinaryMessage(Buffer.buffer(serializer.serialize(newClient)));
+            final PlayerReq nc = new PlayerReq();
+            nc.tid = (int)this.getId();
+            logger.log(Level.INFO, "Sending ID Update");
+            System.out.println(nc);
+//            final PlayerObject newClient = new PlayerObject();
+//            newClient.name = "";
+//            newClient.tid = (int)this.getId();
+            webSocket.writeBinaryMessage(Buffer.buffer(serializer.serialize(nc)));
         }
-
-
 
 
         if (request instanceof PlayerPos) {
             PlayerPos temp = (PlayerPos)request;
-            System.out.println("Received Position: " + ((PlayerPos) request).x + "," + ((PlayerPos) request).y);
+//            System.out.println("Received Position: " + ((PlayerPos) request).x + "," + ((PlayerPos) request).y);
             this.server.updateMap(this.getId(),temp.x, temp.y);
         }
 

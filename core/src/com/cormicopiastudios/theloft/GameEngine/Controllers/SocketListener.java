@@ -3,6 +3,9 @@ package com.cormicopiastudios.theloft.GameEngine.Controllers;
 import com.cormicopiastudios.theloft.GameEngine.GameMaster;
 import com.cormicopiastudios.theloftshared.SharedObjects.MessageObject;
 import com.cormicopiastudios.theloftshared.SharedObjects.PlayerObject;
+import com.cormicopiastudios.theloftshared.SharedObjects.PlayerReq;
+import com.cormicopiastudios.theloftshared.SharedObjects.ServerState;
+import com.cormicopiastudios.theloftshared.SharedUtils;
 import com.github.czyzby.websocket.AbstractWebSocketListener;
 import com.github.czyzby.websocket.WebSocket;
 import com.github.czyzby.websocket.WebSocketListener;
@@ -37,14 +40,21 @@ public class SocketListener extends AbstractWebSocketListener {
 
     @Override
     public boolean onMessage(WebSocket webSocket, Object packet) {
+//        socketLogger.log(Level.INFO, "OnMessage");
 
         // new client
         if (packet instanceof PlayerObject) {
             final PlayerObject localPlayer = (PlayerObject) packet;
             // save local TID for the local client : no remote info yet
-            gameMaster.setLocalTid(localPlayer.tid);
             socketLogger.log(Level.INFO, "Set the local TID in GameMaster");
+            gameMaster.setLocalTid(localPlayer.tid);
 
+        }
+
+
+        if (packet instanceof PlayerReq) {
+            socketLogger.log(Level.INFO, "Set the local TID in GameMaster");
+            gameMaster.setLocalTid(((PlayerReq)packet).tid);
         }
 
         // generic message object
@@ -55,23 +65,23 @@ public class SocketListener extends AbstractWebSocketListener {
             if (messageObject.isLeaving) {
                 // Need to remove
                 // update the game master instance to remove the remote client
+                socketLogger.log(Level.INFO, "Remote Client has left");
+                gameMaster.getInstance().removeRemotePlayer(messageObject.id);
 
             } else {
                 // A new client has joined and therefor needs to be added to the local mapping
+                gameMaster.getInstance().createRemotePlayerInstance(messageObject.id);
 
             }
+        }
+
+        // server state
+        if (packet instanceof ServerState) {
+            ServerState tmp = (ServerState)packet;
+            SharedUtils.stringToMap(gameMaster.getMap(), tmp.state);
         }
 
         return FULLY_HANDLED;
     }
 
-    @Override
-    public boolean onMessage(WebSocket webSocket, byte[] packet) {
-        return FULLY_HANDLED;
-    }
-
-    @Override
-    public boolean onError(WebSocket webSocket, Throwable error) {
-        return FULLY_HANDLED;
-    }
 }

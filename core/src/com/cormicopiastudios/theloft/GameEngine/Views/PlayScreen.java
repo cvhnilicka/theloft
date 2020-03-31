@@ -1,7 +1,9 @@
 package com.cormicopiastudios.theloft.GameEngine.Views;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cormicopiastudios.theloft.GameEngine.Components.BodyComponent;
 import com.cormicopiastudios.theloft.GameEngine.Components.PlayerComponent;
 import com.cormicopiastudios.theloft.GameEngine.Controllers.AssetController;
 import com.cormicopiastudios.theloft.GameEngine.Controllers.InputController;
@@ -23,6 +26,8 @@ import com.cormicopiastudios.theloft.GameEngine.GameMaster;
 import com.cormicopiastudios.theloft.GameEngine.Systems.PhysicsDebugSystem;
 import com.cormicopiastudios.theloft.GameEngine.Systems.PhysicsSystem;
 import com.cormicopiastudios.theloft.GameEngine.Systems.PlayerControlSystem;
+import com.cormicopiastudios.theloft.GameEngine.Systems.PlayerSystem;
+import com.cormicopiastudios.theloft.GameEngine.Systems.TransformSystem;
 
 public class PlayScreen implements Screen {
 
@@ -76,6 +81,8 @@ public class PlayScreen implements Screen {
         engine.addSystem(new PhysicsDebugSystem(world,gamecam));
         player = lvlF.createLocalPlayer();
         engine.addSystem(new PlayerControlSystem(inputController, engine, gameMaster));
+        engine.addSystem(new TransformSystem(this));
+        engine.addSystem(new PlayerSystem(this));
     }
 
 
@@ -134,4 +141,20 @@ public class PlayScreen implements Screen {
             player.getComponent(PlayerComponent.class).tid = tid;
         }
     }
+
+    public void removeRemotePlayer(int tid) {
+        ImmutableArray<Entity> playerChars = this.engine.getEntitiesFor(Family.all(PlayerComponent.class).get());
+        for (int i = 0; i < playerChars.size(); i++) {
+            if (playerChars.get(i).getComponent(PlayerComponent.class).tid == tid) {
+                world.destroyBody(playerChars.get(i).getComponent(BodyComponent.class).body);
+                this.engine.removeEntity(playerChars.get(i));
+                gameMaster.getMap().remove(tid);
+            }
+        }
+    }
+
+    public void createRemotePlayerInstance(int tid) {
+        lvlF.createRemotePlayer(tid);
+    }
+
 }

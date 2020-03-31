@@ -49,7 +49,6 @@ public class ServerLauncher {
             Thread h = new ClientHandler(websocket,serializer, vertx, this);
             this.handlers.add(h);
             PlayerObject tmp = new PlayerObject();
-            tmp.pos = new PlayerPos();
             this.map.put(h.getId(), tmp);
             h.start();
 

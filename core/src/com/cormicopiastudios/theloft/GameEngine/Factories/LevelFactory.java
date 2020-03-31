@@ -47,7 +47,7 @@ public class LevelFactory {
         transformComponent.scale.y = 2f;
         bodyComponent.body.setUserData(localPlayer);
         playerComponent.cam = gamecam;
-//        playerComponent.tid =
+        playerComponent.tid = parent.gameMaster.getLocalTid();
         playerComponent.remote = false;
         System.out.println("Local Player TID: " + playerComponent.tid);
 
@@ -59,6 +59,40 @@ public class LevelFactory {
         // add to engine
         engine.addEntity(localPlayer);
         return localPlayer;
+    }
+
+    public void createRemotePlayer(int tid) {
+
+        float posx = this.gamecam.viewportWidth/2;  // TEMP
+        float posy = this.gamecam.viewportHeight/2;   // TEMP
+
+
+        Entity remotePlayer = engine.createEntity();
+
+        BodyComponent bodyComponent = engine.createComponent(BodyComponent.class);
+        TransformComponent transformComponent = engine.createComponent(TransformComponent.class);
+        PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
+
+        bodyComponent.body = bodyFactory.makeBoxPolyBody(posx,posy,1,2,
+                BodyFactory.FIXTURE_TYPE.STEEL, BodyDef.BodyType.DynamicBody,true);
+
+        // set object pos
+        transformComponent.position.set(posx,posy,0);
+        transformComponent.scale.x = 2f;
+        transformComponent.scale.y = 2f;
+        bodyComponent.body.setUserData(remotePlayer);
+        playerComponent.cam = gamecam;
+        playerComponent.tid = tid;
+        playerComponent.remote = true;
+        System.out.println("Remote Player TID: " + playerComponent.tid);
+
+        // add components to entity
+        remotePlayer.add(bodyComponent);
+        remotePlayer.add(transformComponent);
+        remotePlayer.add(playerComponent);
+
+        // add to engine
+        engine.addEntity(remotePlayer);
     }
 
 }
