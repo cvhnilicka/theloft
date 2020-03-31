@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.cormicopiastudios.theloft.GameEngine.Components.BodyComponent;
+import com.cormicopiastudios.theloft.GameEngine.Components.PlayerComponent;
 import com.cormicopiastudios.theloft.GameEngine.Components.TransformComponent;
 import com.cormicopiastudios.theloft.GameEngine.GameMaster;
 import com.cormicopiastudios.theloft.GameEngine.Views.PlayScreen;
@@ -46,9 +47,9 @@ public class PhysicsSystem extends IntervalIteratingSystem {
             TransformComponent tfm = tm.get(ent);
             BodyComponent bodyComp = bm.get(ent);
             Vector2 pos = bodyComp.body.getPosition();
-//            if ((tfm.position.x != pos.x || tfm.position.y != pos.y) && !ent.getComponent(PlayerComponent.class).remote) {
-//                master.sendPosUpdate(pos);
-//            }
+            if ((tfm.position.x != pos.x || tfm.position.y != pos.y) && !ent.getComponent(PlayerComponent.class).remote) {
+                master.sendPosUpdate(pos);
+            }
             tfm.position.x = pos.x;
             tfm.position.y = pos.y;
 

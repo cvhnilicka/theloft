@@ -1,8 +1,10 @@
 package com.cormicopiastudios.theloft.GameEngine;
 
+import com.badlogic.gdx.math.Vector2;
 import com.cormicopiastudios.theloft.GameEngine.Controllers.SocketListener;
 import com.cormicopiastudios.theloft.GameEngine.Views.PlayScreen;
 import com.cormicopiastudios.theloft.TheLoft;
+import com.cormicopiastudios.theloftshared.SharedObjects.PlayerPos;
 import com.github.czyzby.websocket.WebSocket;
 import com.github.czyzby.websocket.net.ExtendedNet;
 
@@ -12,9 +14,9 @@ public class GameMaster {
     private PlayScreen instance;
     private WebSocket socket;
 
-    public final static long TEMPTID = -99L;
+    public final static int TEMPTID = -99;
 
-    private long localTid;
+    private int localTid;
 
     public GameMaster(TheLoft parent) {
         this.parent = parent;
@@ -27,9 +29,22 @@ public class GameMaster {
 
     }
 
-    public void setLocalTid(long tid) { this.localTid = tid; }
+    public void setLocalTid(int tid) {
+        this.localTid = tid;
+        this.instance.setPlayerTID(tid);
+    }
 
-    public long getLocalTid() {
+    public int getLocalTid() {
         return localTid;
+    }
+
+    public void sendPosUpdate(Vector2 pos) {
+        if (socket.isOpen()) {
+            final PlayerPos posUpdate = new PlayerPos();
+            posUpdate.x = pos.x;
+            posUpdate.y = pos.y;
+//            parent.m.put(Integer.valueOf(parent.tid), posUpdate);
+            socket.send(posUpdate);
+        }
     }
 }

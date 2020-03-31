@@ -43,6 +43,7 @@ public class SocketListener extends AbstractWebSocketListener {
             final PlayerObject localPlayer = (PlayerObject) packet;
             // save local TID for the local client : no remote info yet
             gameMaster.setLocalTid(localPlayer.tid);
+            socketLogger.log(Level.INFO, "Set the local TID in GameMaster");
 
         }
 

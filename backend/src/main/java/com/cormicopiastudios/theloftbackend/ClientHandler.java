@@ -2,6 +2,7 @@ package com.cormicopiastudios.theloftbackend;
 
 import com.cormicopiastudios.theloftshared.SharedObjects.MessageObject;
 import com.cormicopiastudios.theloftshared.SharedObjects.PlayerObject;
+import com.cormicopiastudios.theloftshared.SharedObjects.PlayerPos;
 import com.github.czyzby.websocket.serialization.Serializer;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -69,13 +70,34 @@ public class ClientHandler extends Thread {
             logger.log(Level.INFO, "Received MESSAGE: " + ((MessageObject)request).message);
             final PlayerObject newClient = new PlayerObject();
             newClient.name = "";
-            newClient.tid = this.getId();
+            newClient.tid = (int)this.getId();
             webSocket.writeBinaryMessage(Buffer.buffer(serializer.serialize(newClient)));
         }
 
 
 
 
+        if (request instanceof PlayerPos) {
+            PlayerPos temp = (PlayerPos)request;
+            System.out.println("Received Position: " + ((PlayerPos) request).x + "," + ((PlayerPos) request).y);
+            this.server.updateMap(this.getId(),temp.x, temp.y);
+        }
+
+    }
+
+    public void newClientMessage(long tid) {
+        MessageObject newClient = new MessageObject();
+        newClient.message = "New Client has joined with id " + tid;
+        newClient.isLeaving = false;
+        newClient.id = (int)tid;
+        wbs.writeBinaryMessage(Buffer.buffer(serializer.serialize(newClient)));
+    }
+    public void clientHasLeft(long tid) {
+        MessageObject clientLeft = new MessageObject();
+        clientLeft.message = "Client has left: " + tid;
+        clientLeft.isLeaving = true;
+        clientLeft.id = (int)tid;
+        wbs.writeBinaryMessage(Buffer.buffer(serializer.serialize(clientLeft)));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.cormicopiastudios.theloftbackend;
 
 import com.cormicopiastudios.theloftshared.SharedObjects.PlayerObject;
+import com.cormicopiastudios.theloftshared.SharedObjects.PlayerPos;
 import com.github.czyzby.websocket.serialization.Serializer;
 import com.github.czyzby.websocket.serialization.impl.JsonSerializer;
 
@@ -47,11 +48,28 @@ public class ServerLauncher {
 
             Thread h = new ClientHandler(websocket,serializer, vertx, this);
             this.handlers.add(h);
-            this.map.put(h.getId(), new PlayerObject());
+            PlayerObject tmp = new PlayerObject();
+            tmp.pos = new PlayerPos();
+            this.map.put(h.getId(), tmp);
             h.start();
 
 
         }).listen(PORT);
+    }
+
+    public void newClientJoined(long tid) {
+        for (Thread t : this.handlers) {
+            ((ClientHandler)t).newClientMessage(tid);
+        }
+    }
+    public void clientLeft(long tid) {
+        for (Thread t : this.handlers) {
+            ((ClientHandler)t).clientHasLeft(tid);
+        }
+    }
+    public void updateMap(long id, float x, float y) {
+        this.map.get(id).pos.x = x;
+        this.map.get(id).pos.y = y;
     }
 
 }

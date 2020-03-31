@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.cormicopiastudios.theloft.GameEngine.Components.PlayerComponent;
 import com.cormicopiastudios.theloft.GameEngine.Controllers.AssetController;
 import com.cormicopiastudios.theloft.GameEngine.Controllers.InputController;
 import com.cormicopiastudios.theloft.GameEngine.Factories.BodyFactory;
@@ -126,5 +127,11 @@ public class PlayScreen implements Screen {
 
     public OrthographicCamera getGamecam() {
         return gamecam;
+    }
+
+    public void setPlayerTID(int tid) {
+        if (player != null) {
+            player.getComponent(PlayerComponent.class).tid = tid;
+        }
     }
 }
