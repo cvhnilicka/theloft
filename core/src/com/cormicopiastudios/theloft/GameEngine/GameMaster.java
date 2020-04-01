@@ -56,7 +56,7 @@ public class GameMaster {
             PlayerObject tm = new PlayerObject();
             tm.pos.x = pos.x;
             tm.pos.y = pos.y;
-            map.put(localTid, tm);
+            map.put(Integer.valueOf(localTid), tm);
             socket.send(posUpdate);
         }
     }

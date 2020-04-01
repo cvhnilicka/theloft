@@ -53,7 +53,7 @@ public class SocketListener extends AbstractWebSocketListener {
 
 
         if (packet instanceof PlayerReq) {
-            socketLogger.log(Level.INFO, "Set the local TID in GameMaster");
+            socketLogger.log(Level.WARNING, "Set the local TID in GameMaster");
             gameMaster.setLocalTid(((PlayerReq)packet).tid);
         }
 
