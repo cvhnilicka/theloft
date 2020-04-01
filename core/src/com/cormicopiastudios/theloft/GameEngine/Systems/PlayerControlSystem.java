@@ -44,24 +44,24 @@ public class PlayerControlSystem extends IteratingSystem {
             int maxSpeed = 5;
             boolean moved = false;
             if (controller.left && b2body.body.getLinearVelocity().x > -maxSpeed) {
-                b2body.body.applyLinearImpulse(new Vector2(-.5f, 0), b2body.body.getWorldCenter(), true);
+                b2body.body.applyLinearImpulse(new Vector2(-.3f, 0), b2body.body.getWorldCenter(), true);
                 moved = true;
             }
             if (controller.right && b2body.body.getLinearVelocity().x < maxSpeed) {
-                b2body.body.applyLinearImpulse(new Vector2(.5f, 0), b2body.body.getWorldCenter(), true);
+                b2body.body.applyLinearImpulse(new Vector2(.3f, 0), b2body.body.getWorldCenter(), true);
                 moved = true;
 
 
             }
 
             if (controller.up && b2body.body.getLinearVelocity().y < maxSpeed) {
-                b2body.body.applyLinearImpulse(new Vector2(0, .5f), b2body.body.getWorldCenter(), true);
+                b2body.body.applyLinearImpulse(new Vector2(0, .3f), b2body.body.getWorldCenter(), true);
                 moved = true;
 
             }
             if (controller.down && b2body.body.getLinearVelocity().y > -maxSpeed) {
                 moved = true;
-                b2body.body.applyLinearImpulse(new Vector2(0, -.5f), b2body.body.getWorldCenter(), true);
+                b2body.body.applyLinearImpulse(new Vector2(0, -.3f), b2body.body.getWorldCenter(), true);
 
             }
 

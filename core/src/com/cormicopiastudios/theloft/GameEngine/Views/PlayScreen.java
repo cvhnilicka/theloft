@@ -27,6 +27,7 @@ import com.cormicopiastudios.theloft.GameEngine.Systems.PhysicsDebugSystem;
 import com.cormicopiastudios.theloft.GameEngine.Systems.PhysicsSystem;
 import com.cormicopiastudios.theloft.GameEngine.Systems.PlayerControlSystem;
 import com.cormicopiastudios.theloft.GameEngine.Systems.PlayerSystem;
+import com.cormicopiastudios.theloft.GameEngine.Systems.RenderingSystem;
 import com.cormicopiastudios.theloft.GameEngine.Systems.TransformSystem;
 
 public class PlayScreen implements Screen {
@@ -70,6 +71,7 @@ public class PlayScreen implements Screen {
         gamecam.setToOrtho(false, 10,10);
 //        gamecam.position.x = MathUtils.clamp(gamecam.position.x, gamePort.getWorldWidth()/32,gamePort.getWorldWidth()/2);
 //        gamecam.position.y = MathUtils.clamp(gamecam.position.y, gamePort.getWorldHeight()/32,gamePort.getWorldHeight()/2);
+        RenderingSystem renderingSystem = new RenderingSystem(this);
 
         map = assetController.mapLoader.load(assetController.backgroundTMX);
         renderer = new OrthogonalTiledMapRenderer(map,1/PPM);
@@ -77,8 +79,9 @@ public class PlayScreen implements Screen {
 //        renderer.setView(gamecam.projection,-gamecam.viewportWidth/2,-gamecam.viewportHeight/2,320,320);
         engine = new PooledEngine();
         lvlF = new LevelFactory(this);
+        engine.addSystem(renderingSystem);
         engine.addSystem(new PhysicsSystem(gameMaster, this));
-        engine.addSystem(new PhysicsDebugSystem(world,gamecam));
+//        engine.addSystem(new PhysicsDebugSystem(world,gamecam));
         player = lvlF.createLocalPlayer();
         engine.addSystem(new PlayerControlSystem(inputController, engine, gameMaster));
         engine.addSystem(new TransformSystem(this));

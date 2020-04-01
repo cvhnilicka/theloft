@@ -1,0 +1,96 @@
+
+loftcharacters.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+person-practice4loft-v1
+  rotate: false
+  xy: 1, 1
+  size: 32, 48
+  orig: 32, 48
+  offset: 0, 0
+  index: -1
+person-practice4loft-v2
+  rotate: false
+  xy: 35, 1
+  size: 32, 48
+  orig: 32, 48
+  offset: 0, 0
+  index: -1
+person-practice4loft-v3
+  rotate: false
+  xy: 69, 1
+  size: 32, 48
+  orig: 32, 48
+  offset: 0, 0
+  index: -1
+person-practice4loft-v4
+  rotate: false
+  xy: 103, 1
+  size: 32, 48
+  orig: 32, 48
+  offset: 0, 0
+  index: -1
+pinkghost1
+  rotate: false
+  xy: 137, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+pinkghost2
+  rotate: false
+  xy: 171, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+superhero-looking-character-large1
+  rotate: false
+  xy: 205, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+superhero-looking-character-large2
+  rotate: false
+  xy: 239, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+superhero-looking-character-large4
+  rotate: false
+  xy: 239, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+superhero-looking-character-large3
+  rotate: false
+  xy: 273, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+weird-slime-creature-large1
+  rotate: false
+  xy: 307, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+weird-slime-creature-large2
+  rotate: false
+  xy: 341, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+weird-slime-creature-large3
+  rotate: false
+  xy: 375, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

@@ -1,6 +1,7 @@
 package com.cormicopiastudios.theloft.GameEngine;
 
 import com.badlogic.gdx.math.Vector2;
+import com.cormicopiastudios.theloft.GameEngine.Controllers.AssetController;
 import com.cormicopiastudios.theloft.GameEngine.Controllers.SocketListener;
 import com.cormicopiastudios.theloft.GameEngine.Views.PlayScreen;
 import com.cormicopiastudios.theloft.TheLoft;
@@ -18,6 +19,8 @@ public class GameMaster {
     private TheLoft parent;
     private PlayScreen instance;
     private WebSocket socket;
+    private AssetController assetController;
+
 
     public final static int TEMPTID = -99;
 
@@ -28,7 +31,10 @@ public class GameMaster {
 
     public GameMaster(TheLoft parent) {
         this.parent = parent;
-        this.socket = ExtendedNet.getNet().newWebSocket("127.0.0.1", 8765);
+        this.assetController = new AssetController();
+        assetController.queueAddImages();
+        assetController.manager.finishLoading();
+        this.socket = ExtendedNet.getNet().newWebSocket("34.211.231.68", 8765);
         WebSocketListener sl = new SocketListener(this);
         this.socket.addListener(sl);
         localTid = TEMPTID;
@@ -71,5 +77,9 @@ public class GameMaster {
 
     public void dispose() {
         WebSockets.closeGracefully(socket); // Null-safe closing method that catches and logs any exceptions.
+    }
+
+    public AssetController getAssetController() {
+        return assetController;
     }
 }

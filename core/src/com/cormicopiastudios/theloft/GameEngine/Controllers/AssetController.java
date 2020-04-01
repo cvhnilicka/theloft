@@ -11,6 +11,7 @@ public class AssetController {
 
     // strings
     public final String backgroundTMX = "background/theloft.tmx";
+    public final String loftcharacters = "characters/loftcharacters.atlas";
 
 
     // player
@@ -18,7 +19,7 @@ public class AssetController {
 
 
     public void queueAddImages() {
-
+        manager.load(loftcharacters, TextureAtlas.class);
 
 
     }

@@ -3,11 +3,14 @@ package com.cormicopiastudios.theloft.GameEngine.Factories;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.cormicopiastudios.theloft.GameEngine.Components.BodyComponent;
 import com.cormicopiastudios.theloft.GameEngine.Components.PlayerComponent;
+import com.cormicopiastudios.theloft.GameEngine.Components.TextureComponent;
 import com.cormicopiastudios.theloft.GameEngine.Components.TransformComponent;
+import com.cormicopiastudios.theloft.GameEngine.Components.TypeComponent;
 import com.cormicopiastudios.theloft.GameEngine.Views.PlayScreen;
 
 public class LevelFactory {
@@ -37,9 +40,15 @@ public class LevelFactory {
         BodyComponent bodyComponent = engine.createComponent(BodyComponent.class);
         TransformComponent transformComponent = engine.createComponent(TransformComponent.class);
         PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
+        TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
+        TypeComponent typeComponent = engine.createComponent(TypeComponent.class);
 
         bodyComponent.body = bodyFactory.makeBoxPolyBody(posx,posy,1,2,
                 BodyFactory.FIXTURE_TYPE.STEEL, BodyDef.BodyType.DynamicBody,true);
+
+        textureComponent.region = this.parent.gameMaster.getAssetController().manager.get(
+                this.parent.gameMaster.getAssetController().loftcharacters, TextureAtlas.class).findRegion("person-practice4loft-v1");
+        typeComponent.type = TypeComponent.LOCAL_PLAYER;
 
         // set object pos
         transformComponent.position.set(posx,posy,0);
@@ -55,6 +64,8 @@ public class LevelFactory {
         localPlayer.add(bodyComponent);
         localPlayer.add(transformComponent);
         localPlayer.add(playerComponent);
+        localPlayer.add(textureComponent);
+        localPlayer.add(typeComponent);
 
         // add to engine
         engine.addEntity(localPlayer);
@@ -72,9 +83,16 @@ public class LevelFactory {
         BodyComponent bodyComponent = engine.createComponent(BodyComponent.class);
         TransformComponent transformComponent = engine.createComponent(TransformComponent.class);
         PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
+        TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
+        TypeComponent typeComponent = engine.createComponent(TypeComponent.class);
 
         bodyComponent.body = bodyFactory.makeBoxPolyBody(posx,posy,1,2,
                 BodyFactory.FIXTURE_TYPE.STEEL, BodyDef.BodyType.DynamicBody,true);
+
+        textureComponent.region = this.parent.gameMaster.getAssetController().manager.get(
+                this.parent.gameMaster.getAssetController().loftcharacters, TextureAtlas.class).findRegion("superhero-looking-character-large2");
+        typeComponent.type = TypeComponent.REMOTE_PLAYER;
+
 
         // set object pos
         transformComponent.position.set(posx,posy,0);
@@ -90,6 +108,8 @@ public class LevelFactory {
         remotePlayer.add(bodyComponent);
         remotePlayer.add(transformComponent);
         remotePlayer.add(playerComponent);
+        remotePlayer.add(textureComponent);
+        remotePlayer.add(typeComponent);
 
         // add to engine
         engine.addEntity(remotePlayer);
