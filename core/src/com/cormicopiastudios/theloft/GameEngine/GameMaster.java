@@ -34,7 +34,7 @@ public class GameMaster {
         this.assetController = new AssetController();
         assetController.queueAddImages();
         assetController.manager.finishLoading();
-        this.socket = ExtendedNet.getNet().newWebSocket("34.211.231.68", 8765);
+        this.socket = ExtendedNet.getNet().newWebSocket("127.0.0.1", 8765);
         WebSocketListener sl = new SocketListener(this);
         this.socket.addListener(sl);
         localTid = TEMPTID;
