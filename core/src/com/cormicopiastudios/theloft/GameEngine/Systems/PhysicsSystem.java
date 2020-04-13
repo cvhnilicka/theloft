@@ -48,14 +48,20 @@ public class PhysicsSystem extends IntervalIteratingSystem {
             BodyComponent bodyComp = bm.get(ent);
             Vector2 pos = bodyComp.body.getPosition();
 
-            if (pos.x < 0)
+            if (pos.x < 0) {
                 pos.x = 0;
-            if (pos.x > 10)
+                // enter arcade room
+                parent.enterArcade(pos.y);
+            }
+            if (pos.x > 10) {
                 pos.x = 10;
-            if (pos.y > 10)
+            }
+            if (pos.y > 10) {
                 pos.y = 10;
-            if(pos.y < 0)
+            }
+            if(pos.y < 0) {
                 pos.y = 0;
+            }
 
 
             if ((tfm.position.x != pos.x || tfm.position.y != pos.y) && !ent.getComponent(PlayerComponent.class).remote) {

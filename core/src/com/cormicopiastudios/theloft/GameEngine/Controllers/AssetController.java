@@ -11,6 +11,7 @@ public class AssetController {
 
     // strings
     public final String backgroundTMX = "background/theloft.tmx";
+    public final String garageBackagroundTMX = "background/arcade.tmx";
     public final String loftcharacters = "characters/loftcharacters.atlas";
 
 

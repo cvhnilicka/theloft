@@ -66,14 +66,12 @@ public class RenderingSystem extends SortedIteratingSystem {
         renderer = new OrthogonalTiledMapRenderer(map,1/PPM);
         renderer.setView(cam);
 
+    }
 
-//        this.backgroundAtlas = parent.getAssetController().manager.get(
-//                parent.getAssetController().backgroundPix, TextureAtlas.class);
-//        this.backgroundAnim = new Animation(0.1f, backgroundAtlas.findRegions("Background"));
-//        backgroundAnim.setPlayMode(Animation.PlayMode.LOOP);
-//        stateTime = 0.f;
-//        hud = new Hud(this, batch);
-
+    public void changeRoom(String mapName, float posx, float posy){
+        map = assetController.mapLoader.load(mapName);
+        renderer = new OrthogonalTiledMapRenderer(map, 1/PPM);
+        renderer.setView(cam);
     }
 
 
