@@ -41,7 +41,7 @@ public class PlayerControlSystem extends IteratingSystem {
         if (!player.remote) {
 
 
-            int maxSpeed = 5;
+            int maxSpeed = 3;
             boolean moved = false;
             if (controller.left && b2body.body.getLinearVelocity().x > -maxSpeed) {
                 b2body.body.applyLinearImpulse(new Vector2(-.3f, 0), b2body.body.getWorldCenter(), true);

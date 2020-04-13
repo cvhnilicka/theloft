@@ -20,6 +20,7 @@ public class LevelFactory {
     private World world;
     private BodyFactory bodyFactory;
     private OrthographicCamera gamecam;
+    private float playerScale = 1f;
 
     public LevelFactory(PlayScreen parent) {
         this.parent = parent;
@@ -43,7 +44,7 @@ public class LevelFactory {
         TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
         TypeComponent typeComponent = engine.createComponent(TypeComponent.class);
 
-        bodyComponent.body = bodyFactory.makeBoxPolyBody(posx,posy,1,2,
+        bodyComponent.body = bodyFactory.makeBoxPolyBody(posx,posy,.5f,1,
                 BodyFactory.FIXTURE_TYPE.STEEL, BodyDef.BodyType.DynamicBody,true);
 
         textureComponent.region = this.parent.gameMaster.getAssetController().manager.get(
@@ -52,8 +53,8 @@ public class LevelFactory {
 
         // set object pos
         transformComponent.position.set(posx,posy,0);
-        transformComponent.scale.x = 2f;
-        transformComponent.scale.y = 2f;
+        transformComponent.scale.x = playerScale;
+        transformComponent.scale.y = playerScale;
         bodyComponent.body.setUserData(localPlayer);
         playerComponent.cam = gamecam;
         playerComponent.tid = parent.gameMaster.getLocalTid();
@@ -86,7 +87,7 @@ public class LevelFactory {
         TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
         TypeComponent typeComponent = engine.createComponent(TypeComponent.class);
 
-        bodyComponent.body = bodyFactory.makeBoxPolyBody(posx,posy,1,2,
+        bodyComponent.body = bodyFactory.makeBoxPolyBody(posx,posy,.5f,1,
                 BodyFactory.FIXTURE_TYPE.STEEL, BodyDef.BodyType.DynamicBody,true);
 
         textureComponent.region = this.parent.gameMaster.getAssetController().manager.get(
@@ -96,8 +97,8 @@ public class LevelFactory {
 
         // set object pos
         transformComponent.position.set(posx,posy,0);
-        transformComponent.scale.x = 2f;
-        transformComponent.scale.y = 2f;
+        transformComponent.scale.x = playerScale;
+        transformComponent.scale.y = playerScale;
         bodyComponent.body.setUserData(remotePlayer);
         playerComponent.cam = gamecam;
         playerComponent.tid = tid;
