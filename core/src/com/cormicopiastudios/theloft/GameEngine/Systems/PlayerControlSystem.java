@@ -39,33 +39,36 @@ public class PlayerControlSystem extends IteratingSystem {
         PlayerComponent player = pm.get(entity);
         TransformComponent trans = tm.get(entity);
         if (!player.remote) {
-
-
-            int maxSpeed = 5;
+            int maxSpeed = 3;
             boolean moved = false;
-            if (controller.left && b2body.body.getLinearVelocity().x > -maxSpeed) {
-                b2body.body.applyLinearImpulse(new Vector2(-.3f, 0), b2body.body.getWorldCenter(), true);
-                moved = true;
+
+//            if (b2body.body.getPosition().x > 0 && b2body.body.getPosition().y > 0 &&
+//                    b2body.body.getPosition().y < 320 && b2body.body.getPosition().x < 320) {
+
+                if (controller.left && b2body.body.getLinearVelocity().x > -maxSpeed) {
+                    b2body.body.applyLinearImpulse(new Vector2(-.3f, 0), b2body.body.getWorldCenter(), true);
+                    moved = true;
+                }
+                if (controller.right && b2body.body.getLinearVelocity().x < maxSpeed) {
+                    b2body.body.applyLinearImpulse(new Vector2(.3f, 0), b2body.body.getWorldCenter(), true);
+                    moved = true;
+
+
+                }
+
+                if (controller.up && b2body.body.getLinearVelocity().y < maxSpeed) {
+                    b2body.body.applyLinearImpulse(new Vector2(0, .3f), b2body.body.getWorldCenter(), true);
+                    moved = true;
+
+                }
+                if (controller.down && b2body.body.getLinearVelocity().y > -maxSpeed) {
+                    moved = true;
+                    b2body.body.applyLinearImpulse(new Vector2(0, -.3f), b2body.body.getWorldCenter(), true);
+
+                }
+
             }
-            if (controller.right && b2body.body.getLinearVelocity().x < maxSpeed) {
-                b2body.body.applyLinearImpulse(new Vector2(.3f, 0), b2body.body.getWorldCenter(), true);
-                moved = true;
-
-
-            }
-
-            if (controller.up && b2body.body.getLinearVelocity().y < maxSpeed) {
-                b2body.body.applyLinearImpulse(new Vector2(0, .3f), b2body.body.getWorldCenter(), true);
-                moved = true;
-
-            }
-            if (controller.down && b2body.body.getLinearVelocity().y > -maxSpeed) {
-                moved = true;
-                b2body.body.applyLinearImpulse(new Vector2(0, -.3f), b2body.body.getWorldCenter(), true);
-
-            }
-
-        }
+//        }
 
 
 

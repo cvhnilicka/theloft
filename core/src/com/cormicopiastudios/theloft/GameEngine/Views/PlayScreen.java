@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.cormicopiastudios.theloft.GameEngine.Components.BodyComponent;
 import com.cormicopiastudios.theloft.GameEngine.Components.PlayerComponent;
+import com.cormicopiastudios.theloft.GameEngine.Components.TransformComponent;
 import com.cormicopiastudios.theloft.GameEngine.Controllers.AssetController;
 import com.cormicopiastudios.theloft.GameEngine.Controllers.InputController;
 import com.cormicopiastudios.theloft.GameEngine.Factories.BodyFactory;
@@ -55,6 +56,7 @@ public class PlayScreen implements Screen {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
+    private RenderingSystem renderingSystem;
 
 
     public PlayScreen(GameMaster gameMaster) {
@@ -64,19 +66,9 @@ public class PlayScreen implements Screen {
         assetController = new AssetController();
         gamecam = new OrthographicCamera();
 
-//        gamePort = new FitViewport(320,320, gamecam);
-
-
-//        gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2,0);
-        gamecam.setToOrtho(false, 10,10);
-//        gamecam.position.x = MathUtils.clamp(gamecam.position.x, gamePort.getWorldWidth()/32,gamePort.getWorldWidth()/2);
-//        gamecam.position.y = MathUtils.clamp(gamecam.position.y, gamePort.getWorldHeight()/32,gamePort.getWorldHeight()/2);
-        RenderingSystem renderingSystem = new RenderingSystem(this);
+        renderingSystem = new RenderingSystem(this);
 
         map = assetController.mapLoader.load(assetController.backgroundTMX);
-        renderer = new OrthogonalTiledMapRenderer(map,1/PPM);
-        renderer.setView(gamecam);
-//        renderer.setView(gamecam.projection,-gamecam.viewportWidth/2,-gamecam.viewportHeight/2,320,320);
         engine = new PooledEngine();
         lvlF = new LevelFactory(this);
         engine.addSystem(renderingSystem);
@@ -88,6 +80,14 @@ public class PlayScreen implements Screen {
         engine.addSystem(new PlayerSystem(this));
     }
 
+    public void enterArcade (float posy) {
+        renderingSystem.changeRoom(assetController.garageBackagroundTMX, 10, posy);
+        player.getComponent(BodyComponent.class).body.getPosition().x = 320;
+    }
+
+    public AssetController getAssetController() {
+        return assetController;
+    }
 
     @Override
     public void show() {
@@ -98,8 +98,17 @@ public class PlayScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        renderer.render();
+        Vector2 ppos = new Vector2(player.getComponent(TransformComponent.class).position.x,
+                player.getComponent(TransformComponent.class).position.y);
+
+//        renderer.render();
+
+
         engine.update(delta);
+    }
+
+    public Entity getPlayer() {
+        return player;
     }
 
     @Override

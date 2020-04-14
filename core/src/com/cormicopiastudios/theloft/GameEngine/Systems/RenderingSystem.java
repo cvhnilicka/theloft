@@ -8,10 +8,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.cormicopiastudios.theloft.GameEngine.Components.TextureComponent;
 import com.cormicopiastudios.theloft.GameEngine.Components.TransformComponent;
 import com.cormicopiastudios.theloft.GameEngine.Components.TypeComponent;
+import com.cormicopiastudios.theloft.GameEngine.Controllers.AssetController;
 import com.cormicopiastudios.theloft.GameEngine.Views.PlayScreen;
 
 import java.util.Comparator;
@@ -24,6 +29,7 @@ public class RenderingSystem extends SortedIteratingSystem {
     private OrthographicCamera cam; // reference to our gamecam
     static final float PPM = 32.f; // Sets the amount of pixels each meter of box2d object contain (will probably need to readjust this after the fact)
     public static final float PIXELS_TO_METERS = 1.f /PPM; // conversion ratio
+    private AssetController assetController;
 
     // component mappers to get compoents from entities
 
@@ -37,6 +43,9 @@ public class RenderingSystem extends SortedIteratingSystem {
 
     private PlayScreen parent;
 
+    private TiledMap map;
+    private OrthogonalTiledMapRenderer renderer;
+
     @SuppressWarnings("unchecked")
     public RenderingSystem(PlayScreen parent) {
         super(Family.all(TransformComponent.class, TextureComponent.class).get(), new ZComparator());
@@ -44,6 +53,7 @@ public class RenderingSystem extends SortedIteratingSystem {
         // create component mappers
         textureM = ComponentMapper.getFor(TextureComponent.class);
         transformM = ComponentMapper.getFor(TransformComponent.class);
+        assetController = parent.getAssetController();
 
         comparator = new ZComparator();
 
@@ -51,14 +61,17 @@ public class RenderingSystem extends SortedIteratingSystem {
 
         this.batch = new SpriteBatch();
         cam = parent.getGamecam();
+        cam.setToOrtho(false,6,6);
+        map = assetController.mapLoader.load(assetController.backgroundTMX);
+        renderer = new OrthogonalTiledMapRenderer(map,1/PPM);
+        renderer.setView(cam);
 
-//        this.backgroundAtlas = parent.getAssetController().manager.get(
-//                parent.getAssetController().backgroundPix, TextureAtlas.class);
-//        this.backgroundAnim = new Animation(0.1f, backgroundAtlas.findRegions("Background"));
-//        backgroundAnim.setPlayMode(Animation.PlayMode.LOOP);
-//        stateTime = 0.f;
-//        hud = new Hud(this, batch);
+    }
 
+    public void changeRoom(String mapName, float posx, float posy){
+        map = assetController.mapLoader.load(mapName);
+        renderer = new OrthogonalTiledMapRenderer(map, 1/PPM);
+        renderer.setView(cam);
     }
 
 
@@ -73,7 +86,13 @@ public class RenderingSystem extends SortedIteratingSystem {
 
         // sort on z index
         renderQueue.sort(comparator);
+        Entity ent = parent.getPlayer();
+        Vector3 ppos = ent.getComponent(TransformComponent.class).position;
+        cam.position.set(ppos);
+        renderer.setView(cam);
         cam.update();
+        renderer.render();
+
         batch.setProjectionMatrix(cam.combined);
         batch.enableBlending();
         batch.begin();
@@ -106,4 +125,7 @@ public class RenderingSystem extends SortedIteratingSystem {
 
     }
 
+    public SpriteBatch getBatch() {
+        return batch;
+    }
 }
